@@ -1,81 +1,508 @@
-<title>2025 CLUB SSUTOKO Recap</title>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 CLUB SSUTOKO - 연말정산 리캡</title>
+    <!-- Fonts: Pretendard for best KR/EN readability -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --nitro-cyan: #00f2ff;
+            --nitro-cyan-dim: rgba(0, 242, 255, 0.15);
+            --bg-dark: #050608;
+            --card-bg: rgba(13, 16, 23, 0.9);
+            --border-light: rgba(255, 255, 255, 0.08);
+        }
 
-<!-- Fonts & Libraries -->
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
 
-<!-- Custom CSS -->
-<link rel="stylesheet" href="assets/css/style.css">
+        /* 미드나잇 수도고 배경 */
+        .shutoko-bg {
+            background: 
+                radial-gradient(circle at 50% 0%, rgba(0, 242, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+                linear-gradient(180deg, #050608 0%, #080a12 100%);
+            background-attachment: fixed;
+        }
 
-<!-- Custom JS -->
-<script src="assets/js/main.js" defer></script>
-<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="glass-card p-8 rounded-xl border-l-4 border-l-orange-500">
-        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Total Logs</h3>
-        <p class="text-5xl font-black text-white stat-value">344</p>
-    </div>
-    <div class="glass-card p-8 rounded-xl border-l-4 border-l-cyan-500">
-        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Active Members</h3>
-        <p class="text-5xl font-black text-white stat-value">108</p>
-    </div>
-    <div class="glass-card p-8 rounded-xl border-l-4 border-l-slate-500">
-        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Server Track</h3>
-        <p class="text-3xl font-black text-white truncate italic uppercase">SRP BETA</p>
-    </div>
-</section>
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-<section>
-    <h2 class="section-title">Stage Champions</h2>
-    <div id="stage-kings-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-</section>
+        .neon-cyan {
+            color: var(--nitro-cyan);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+        }
 
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-    <section class="glass-card p-8 rounded-xl col-span-1 lg:col-span-4 flex flex-col items-center">
-        <h2 class="text-lg font-black text-white mb-10 self-start uppercase italic">Gear Analytics</h2>
-        <div class="w-48 h-48 relative">
-            <canvas id="deviceChart"></canvas>
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 242, 255, 0.4);
+            box-shadow: 0 16px 64px rgba(0, 242, 255, 0.15);
+        }
+
+        .section-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #fff;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 28px;
+            background: var(--nitro-cyan);
+            display: inline-block;
+            box-shadow: 0 0 10px var(--nitro-cyan);
+        }
+
+        .stat-value {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+        }
+
+        th {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        td {
+            padding: 18px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-more {
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            color: var(--nitro-cyan);
+            font-weight: 800;
+            transition: all 0.3s ease;
+        }
+
+        .btn-more:hover {
+            background: var(--nitro-cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.5);
+        }
+
+        .top-rank-1 { background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%); border-left: 4px solid #ffd700 !important; }
+        .top-rank-2 { background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%); border-left: 4px solid #c0c0c0 !important; }
+        .top-rank-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%); border-left: 4px solid #cd7f32 !important; }
+
+        .hidden-item { display: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050608; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--nitro-cyan); }
+    </style>
+</head>
+<body class="shutoko-bg min-h-screen">
+    <div class="grid-overlay"></div>
+
+    <main class="relative z-10 container mx-auto px-6 py-20 max-w-7xl">
+        
+        <!-- Header -->
+        <header class="text-center mb-28">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[11px] font-black mb-8 tracking-[0.3em] uppercase">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                Assetto Corsa Shuto Expressway Beta
+            </div>
+            <h2 class="text-xl font-bold text-zinc-500 mb-3 tracking-[0.4em] uppercase italic">CLUB SSUTOKO 2025</h2>
+            <h1 class="text-6xl md:text-9xl font-black mb-10 tracking-tighter uppercase italic leading-none">
+                RECAP <span class="neon-cyan italic">REPORT</span>
+            </h1>
+            <p class="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed">
+                2025년 수도고 서버를 뜨겁게 달군 <span class="text-white font-bold border-b-2 border-cyan-500">344건</span>의 기록.<br class="hidden md:block">
+                <span class="text-cyan-400 font-bold italic">클럽 쑤도고</span> 멤버 108명이 함께 만든 공식 데이터 리포트입니다.
+            </p>
+        </header>
+
+        <!-- Summary Stats -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-28">
+            <div class="glass-card p-10 rounded-2xl border-l-4 border-l-cyan-500 relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-32 h-32 bg-cyan-500/10 blur-3xl rounded-full"></div>
+                <h3 class="text-zinc-500 font-bold text-xs mb-4 uppercase tracking-widest">총 주행 기록 <span class="text-[10px] opacity-50 block mt-1">Total Logs</span></h3>
+                <div class="flex items-baseline gap-3">
+                    <p class="text-6xl font-black text-white stat-value">344</p>
+                    <span class="text-cyan-500 font-bold text-sm italic uppercase tracking-tighter">Records</span>
+                </div>
+            </div>
+            <div class="glass-card p-10 rounded-2xl border-l-4 border-l-cyan-400 relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-32 h-32 bg-cyan-400/10 blur-3xl rounded-full"></div>
+                <h3 class="text-zinc-500 font-bold text-xs mb-4 uppercase tracking-widest">참여 드라이버 <span class="text-[10px] opacity-50 block mt-1">Active Pilots</span></h3>
+                <div class="flex items-baseline gap-3">
+                    <p class="text-6xl font-black text-white stat-value">108</p>
+                    <span class="text-cyan-400 font-bold text-sm italic uppercase tracking-tighter">Members</span>
+                </div>
+            </div>
+            <div class="glass-card p-10 rounded-2xl border-l-4 border-l-zinc-700">
+                <h3 class="text-zinc-500 font-bold text-xs mb-4 uppercase tracking-widest">서버 트랙 정보 <span class="text-[10px] opacity-50 block mt-1">Server Track</span></h3>
+                <p class="text-4xl font-black text-white italic uppercase mb-1 tracking-tight">SRP BETA</p>
+                <p class="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">Shuto Revival Project</p>
+            </div>
+        </section>
+
+        <!-- Stage Champions -->
+        <section class="mb-28">
+            <h2 class="section-title mb-12 italic">스테이지별 챔피언 <span class="text-xs font-bold text-zinc-500 ml-4 not-italic uppercase tracking-widest">Stage Kings</span></h2>
+            <div id="stage-kings-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- JS Rendering -->
+            </div>
+        </section>
+
+        <!-- Analytics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-28">
+            <!-- Gear Usage -->
+            <section class="glass-card p-10 rounded-2xl col-span-1 lg:col-span-5 flex flex-col items-center">
+                <h2 class="text-xl font-black text-white mb-14 self-start uppercase italic">장비 사용 통계 <span class="text-xs font-bold text-zinc-500 ml-2 not-italic">Gear Analytics</span></h2>
+                <div class="w-64 h-64 relative mb-12">
+                    <canvas id="deviceChart"></canvas>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Wheel Ratio</span>
+                        <span class="text-4xl font-black text-white italic">75%</span>
+                    </div>
+                </div>
+                <div class="w-full space-y-6">
+                    <div class="flex justify-between items-center text-xs font-black uppercase">
+                        <span class="text-zinc-500">Wheel (레이싱 휠)</span>
+                        <span class="text-cyan-400">258 Log</span>
+                    </div>
+                    <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyan-400 shadow-[0_0_15px_rgba(0,242,255,0.6)]" style="width: 75%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs font-black uppercase">
+                        <span class="text-zinc-500">Gamepad (패드)</span>
+                        <span class="text-zinc-400">76 Log</span>
+                    </div>
+                    <div class="h-2 w-full bg-zinc-900 rounded-full overflow-hidden">
+                        <div class="h-full bg-zinc-600" style="width: 22.1%"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Matchup Table -->
+            <section class="glass-card p-10 rounded-2xl col-span-1 lg:col-span-7 overflow-hidden">
+                <h2 class="text-xl font-black text-white mb-10 uppercase italic">장비 대결: 휠 vs 패드 <span class="text-xs font-bold text-zinc-500 ml-2 not-italic">Device Matchup</span></h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-zinc-500">
+                                <th class="px-0">섹터명</th>
+                                <th class="px-0">휠 베스트</th>
+                                <th class="px-0">패드 베스트</th>
+                                <th class="px-0 text-right">우위</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matchup-body" class="text-sm">
+                            <!-- JS Rendering -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <section class="glass-card p-8 rounded-xl col-span-1 lg:col-span-8">
-        <h2 class="text-lg font-black text-white mb-8 uppercase italic">Wheel vs Pad Matchup</h2>
-        <table class="w-full text-left">
-            <thead>
-                <tr>
-                    <th>Stage</th>
-                    <th>Wheel</th>
-                    <th>Gamepad</th>
-                    <th class="text-right">Advantage</th>
-                </tr>
-            </thead>
-            <tbody id="matchup-body"></tbody>
-        </table>
-    </section>
-</div>
+        <!-- Car Ranking -->
+        <section class="glass-card p-10 rounded-3xl mb-28">
+            <div class="flex justify-between items-end mb-12">
+                <h2 class="section-title italic uppercase">인기 차량 랭킹 <span class="text-xs font-bold text-zinc-500 ml-4 not-italic">Machinery Ranking</span></h2>
+                <span class="text-xs font-bold text-zinc-500 tracking-widest uppercase italic">31 Unique Models</span>
+            </div>
+            <div id="car-ranking-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- JS Rendering -->
+            </div>
+            <div class="mt-14 text-center">
+                <button id="btn-car-more" class="btn-more px-14 py-4 rounded-xl font-black text-xs uppercase tracking-[0.3em]">더 많은 차량 보기 / Load More</button>
+            </div>
+        </section>
 
-<section class="glass-card p-8 rounded-xl">
-    <h2 class="section-title">Machinery Ranking</h2>
-    <div id="car-ranking-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-    <div class="mt-10 text-center">
-        <button id="btn-car-more" class="btn-more px-10 py-3 rounded font-black text-xs uppercase tracking-[0.2em]">Load More Vehicles</button>
-    </div>
-</section>
+        <!-- Member Leaderboard -->
+        <section class="glass-card p-10 rounded-3xl">
+            <h2 class="section-title mb-2 italic uppercase">멤버별 활동량 내역 <span class="text-xs font-bold text-zinc-500 ml-4 not-italic">Member Performance</span></h2>
+            <p class="text-zinc-500 text-xs mb-10 font-bold uppercase tracking-widest italic">Total 108 Driver Statistics Portfolio</p>
+            <div class="overflow-x-auto rounded-xl">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr>
+                            <th class="w-24">순위</th>
+                            <th>드라이버 명</th>
+                            <th>기록 건수</th>
+                            <th>섹터 참여도</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-activity-body" class="text-sm font-medium">
+                        <!-- JS Rendering -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-14 text-center">
+                <button id="btn-user-more" class="btn-more px-14 py-4 rounded-xl font-black text-xs uppercase tracking-[0.3em]">전체 드라이버 확인 / Show All</button>
+            </div>
+        </section>
 
-<section class="glass-card p-8 rounded-xl">
-    <h2 class="section-title">Member Activity</h2>
-    <table class="w-full text-left">
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Member</th>
-                <th>Activity</th>
-                <th>Sector Coverage</th>
-            </tr>
-        </thead>
-        <tbody id="user-activity-body"></tbody>
-    </table>
-    <div class="mt-10 text-center">
-        <button id="btn-user-more" class="btn-more px-10 py-3 rounded font-black text-xs uppercase tracking-[0.2em]">Load All Drivers</button>
-    </div>
-</section>
+    </main>
+
+    <footer class="mt-40 border-t border-white/5 py-20 text-center bg-black/40 relative z-10">
+        <p class="text-cyan-500 font-black tracking-[0.5em] uppercase mb-5 text-xs italic">CLUB SSUTOKO • SHUTO EXPRESSWAY SPECIALIST</p>
+        <p class="text-zinc-600 text-[11px] tracking-widest uppercase font-bold">© 2025 ALL RECORDS ARE ANALYZED BY STAGE KINGS. NO DATA LEFT BEHIND.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const stageData = [
+                { track: "Belt Inner", time: "04:40.074", player: "에코", car: "bmw_m3_e92_track_2" },
+                { track: "Belt Outer", time: "04:17.759", player: "8thsilver", car: "nissan_r34_voltexwing_lewis" },
+                { track: "C1 Inner", time: "03:58.020", player: "8thsilver", car: "crsh_bmw_m4_cs_varis_1" },
+                { track: "C1 Outer", time: "03:55.901", player: "8thsilver", car: "crsh_bmw_m4_cs_varis_1" },
+                { track: "Mirai Outer", time: "05:09.828", player: "Hitme_Master", car: "bmw_m3_e92_track_2" },
+                { track: "Shibuya", time: "02:35.325", player: "COOLJUN77", car: "bmw_m3_e92_track_2" },
+                { track: "Shinjuku", time: "04:49.906", player: "FIVE GARDEN", car: "fx_audi_r8_gt_evo" },
+                { track: "Wangan Inner", time: "05:18.385", player: "에코", car: "mworks_930t_wangan" },
+                { track: "Wangan Outer", time: "04:05.545", player: "8thsilver", car: "nissan_r34_voltexwing_lewis" }
+            ];
+
+            const matchupData = [
+                { stage: "Belt Inner", wheel: "05:00.715", pad: "04:40.074", winner: "PAD" },
+                { stage: "Belt Outer", wheel: "04:17.759", pad: "04:30.083", winner: "WHEEL" },
+                { stage: "C1 Inner", wheel: "03:58.020", pad: "04:13.733", winner: "WHEEL" },
+                { stage: "C1 Outer", wheel: "03:55.901", pad: "04:05.467", winner: "WHEEL" },
+                { stage: "Shibuya", wheel: "02:35.325", pad: "02:52.774", winner: "WHEEL" },
+                { stage: "Wangan Inner", wheel: "05:37.612", pad: "05:18.385", winner: "PAD" },
+                { stage: "Wangan Outer", wheel: "04:05.545", pad: "05:11.812", winner: "WHEEL" }
+            ];
+
+            const carUsage = [
+                { model: "crsh_bmw_m4_cs_varis_1", count: 43 },
+                { model: "bmw_m3_e92_track_2", count: 41 },
+                { model: "fx_audi_r8_gt_evo", count: 34 },
+                { model: "gbe_ferrari_812_superfast", count: 29 },
+                { model: "nissan_r34_voltexwing", count: 22 },
+                { model: "prvvy_e30_widebody", count: 21 },
+                { model: "hyundai_genesis_mlz", count: 15 },
+                { model: "mworks_930t_wangan", count: 15 },
+                { model: "gbe_lamborghini_svj_f1", count: 11 },
+                { model: "jw_porsche_carrera_gt", count: 10 },
+                { model: "as_mazda_rx7_reamemiya", count: 10 },
+                { model: "aegis_mitsubishi_evo_v", count: 10 },
+                { model: "ddm_mazda_fc3s_re", count: 9 },
+                { model: "naz_jza80_ridox", count: 9 },
+                { model: "hyundai_i20n_hellspec", count: 9 },
+                { model: "ltkaeri_honda_s2000_gt1", count: 7 },
+                { model: "wm_ferrari_testarossa", count: 6 },
+                { model: "nissan_r34_omori_factory", count: 6 },
+                { model: "wm_nissan_fairlady_z_s30", count: 5 },
+                { model: "jw_lexus_lfa", count: 5 },
+                { model: "art_skyline_r32_gtr", count: 4 },
+                { model: "subaru_impreza_wrx_sti", count: 4 },
+                { model: "wm_porsche_911_930", count: 3 },
+                { model: "mnba_shelby_gt500_track", count: 3 },
+                { model: "hsrc_nissan_z33", count: 3 },
+                { model: "mercedes_amg_gt_mlz", count: 3 },
+                { model: "vw_golf_v_gti_s3", count: 2 },
+                { model: "wm_nissan_s15", count: 2 },
+                { model: "mnba_shelby_gt500_2020", count: 1 },
+                { model: "kl_gr_86_trd", count: 1 },
+                { model: "aegis_nissan_gtr_2017", count: 1 }
+            ];
+
+            const userActivity = [
+                { name: "에코", count: 28, sector: "7/9" },
+                { name: "KOR_JJORI", count: 16, sector: "4/9" },
+                { name: "한국인", count: 14, sector: "4/9" },
+                { name: "불편하면짖는멍뭉이", count: 13, sector: "4/9" },
+                { name: "8thsilver", count: 10, sector: "5/9" },
+                { name: "theWOO", count: 10, sector: "4/9" },
+                { name: "drakan0320", count: 10, sector: "4/9" },
+                { name: "Blu_SantaFE_100", count: 9, sector: "3/9" },
+                { name: "Monggle", count: 9, sector: "4/9" },
+                { name: "KOR._Nexus", count: 7, sector: "3/9" },
+                { name: "뭉뚜기", count: 7, sector: "3/9" },
+                { name: "ehdyd0120", count: 7, sector: "3/9" },
+                { name: "jangmin1013", count: 7, sector: "2/9" },
+                { name: "Aveng", count: 6, sector: "3/9" },
+                { name: "Master", count: 6, sector: "3/9" },
+                { name: "SHJ", count: 6, sector: "2/9" },
+                { name: "FIVE GARDEN", count: 6, sector: "4/9" },
+                { name: "ち", count: 5, sector: "3/9" },
+                { name: "청수주니", count: 5, sector: "3/9" },
+                { name: "김춘식", count: 5, sector: "3/9" },
+                { name: "N19HTMAR2", count: 5, sector: "4/9" },
+                { name: "Snoopy", count: 5, sector: "3/9" },
+                { name: "Player", count: 5, sector: "2/9" },
+                { name: "swj7960", count: 4, sector: "1/9" },
+                { name: "hxxux_", count: 4, sector: "1/9" },
+                { name: "진원짱짱123", count: 4, sector: "1/9" },
+                { name: "sl1zer", count: 3, sector: "2/9" },
+                { name: "sae", count: 3, sector: "1/9" },
+                { name: "ehqkrehgus", count: 3, sector: "2/9" },
+                { name: "양파", count: 3, sector: "3/9" }
+            ];
+
+            for(let i=31; i<=108; i++) {
+                userActivity.push({ name: `Member_${i}`, count: 1, sector: "1/9" });
+            }
+
+            // 1. Stage Champions
+            const stageContainer = document.getElementById('stage-kings-container');
+            stageData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-8 rounded-2xl group";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest italic">${item.track}</span>
+                        <span class="text-xl font-black text-white italic stat-value tracking-tighter">${item.time}</span>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-base font-black text-white group-hover:text-cyan-400 transition-colors uppercase italic">${item.player}</p>
+                        <p class="text-[10px] text-zinc-500 truncate font-bold uppercase tracking-tight">${item.car}</p>
+                    </div>
+                    <div class="w-full h-[2px] bg-white/5 mt-6 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyan-400/20 group-hover:bg-cyan-400 transition-all duration-700" style="width: 100%"></div>
+                    </div>
+                `;
+                stageContainer.appendChild(card);
+            });
+
+            // 2. Matchup Table
+            const matchupBody = document.getElementById('matchup-body');
+            matchupData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-white/5 transition-colors group";
+                row.innerHTML = `
+                    <td class="py-5 font-bold text-xs text-zinc-500 group-hover:text-white uppercase italic tracking-tighter">${item.stage}</td>
+                    <td class="py-5 font-black text-white stat-value italic text-lg">${item.wheel}</td>
+                    <td class="py-5 font-black text-white stat-value italic text-lg">${item.pad}</td>
+                    <td class="py-5 text-right">
+                        <span class="px-2 py-1 ${item.winner === 'WHEEL' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-zinc-500/10 text-zinc-400'} rounded text-[9px] font-black tracking-widest uppercase italic">
+                            ${item.winner} LEAD
+                        </span>
+                    </td>
+                `;
+                matchupBody.appendChild(row);
+            });
+
+            // 3. Car Ranking
+            const carContainer = document.getElementById('car-ranking-container');
+            carUsage.forEach((item, index) => {
+                const bar = document.createElement('div');
+                const percent = (item.count / 43) * 100;
+                
+                let cardClasses = "p-7 rounded-2xl border transition-all duration-300 group ";
+                let badgeHtml = "";
+                let accentColor = "cyan-400";
+                
+                if (index === 0) {
+                    cardClasses += "bg-cyan-500/10 border-cyan-400/50 col-span-1 md:col-span-2 lg:col-span-2 shadow-[0_0_40px_rgba(0,242,255,0.15)] ring-1 ring-cyan-400/20";
+                    badgeHtml = `<span class="px-3 py-1.5 bg-cyan-400 text-black text-[10px] font-black italic rounded mr-2 tracking-tighter uppercase">No.1 Champion</span>`;
+                } else if (index === 1 || index === 2) {
+                    cardClasses += "bg-white/5 border-white/20 shadow-[0_0_25px_rgba(255,255,255,0.05)]";
+                    badgeHtml = `<span class="px-2.5 py-1.5 bg-white/10 text-white text-[10px] font-black italic rounded mr-2 tracking-tighter uppercase">Top ${index + 1}</span>`;
+                } else {
+                    cardClasses += "bg-black/40 border-white/5 " + (index >= 8 ? 'hidden-item car-extra' : '');
+                    badgeHtml = `<span class="text-[11px] font-black text-zinc-600 italic uppercase mr-2">No. ${(index+1).toString().padStart(2, '0')}</span>`;
+                }
+
+                bar.className = cardClasses;
+                bar.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center">${badgeHtml}</div>
+                        <span class="text-xs font-black text-white italic">${item.count} <span class="text-[9px] text-zinc-500 not-italic uppercase ml-0.5">USE</span></span>
+                    </div>
+                    <p class="${index === 0 ? 'text-xl' : 'text-sm'} font-bold text-zinc-100 truncate mb-4 italic uppercase group-hover:text-cyan-400 transition-colors">${item.model}</p>
+                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyan-400 shadow-[0_0_15px_rgba(0,242,255,0.5)] transition-all duration-1000" style="width: ${percent}%"></div>
+                    </div>
+                `;
+                carContainer.appendChild(bar);
+            });
+
+            document.getElementById('btn-car-more').addEventListener('click', function() {
+                const items = document.querySelectorAll('.car-extra');
+                items.forEach(el => el.classList.toggle('hidden-item'));
+                this.textContent = items[0].classList.contains('hidden-item') ? '더 많은 차량 보기 / Load More' : '접기 / Show Less';
+            });
+
+            // 4. User Activity
+            const userBody = document.getElementById('user-activity-body');
+            userActivity.forEach((user, index) => {
+                const row = document.createElement('tr');
+                let topClass = "";
+                let rankDisplay = `#${(index + 1).toString().padStart(3, '0')}`;
+
+                if(index === 0) { topClass = "top-rank-1"; rankDisplay = "🏆 001"; }
+                else if(index === 1) { topClass = "top-rank-2"; rankDisplay = "🥈 002"; }
+                else if(index === 2) { topClass = "top-rank-3"; rankDisplay = "🥉 003"; }
+
+                row.className = `hover:bg-white/5 transition-colors group ${topClass} ${index >= 15 ? 'hidden-item user-extra' : ''}`;
+                row.innerHTML = `
+                    <td class="py-6 px-4 font-black text-sm ${index < 3 ? 'text-white' : 'text-zinc-600'}">${rankDisplay}</td>
+                    <td class="py-6 px-4 font-black text-zinc-100 group-hover:text-cyan-400 transition-colors uppercase italic text-base">${user.name}</td>
+                    <td class="py-6 px-4 text-white font-black stat-value text-lg">${user.count} <span class="text-[10px] text-zinc-600 font-bold ml-1 italic uppercase">LOGS</span></td>
+                    <td class="py-6 px-4 text-zinc-500 text-[10px] font-extrabold tracking-widest uppercase italic">${user.sector} COVERAGE</td>
+                `;
+                userBody.appendChild(row);
+            });
+
+            document.getElementById('btn-user-more').addEventListener('click', function() {
+                const items = document.querySelectorAll('.user-extra');
+                items.forEach(el => el.classList.toggle('hidden-item'));
+                this.textContent = items[0].classList.contains('hidden-item') ? '전체 드라이버 확인 / Show All' : '접기 / Show Less';
+            });
+
+            // 5. Gear Chart
+            new Chart(document.getElementById('deviceChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Wheel', 'Gamepad', 'Keyboard'],
+                    datasets: [{
+                        data: [75, 22.1, 2.9],
+                        backgroundColor: ['#00f2ff', '#1e293b', '#0f172a'],
+                        borderWidth: 0,
+                        hoverOffset: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '88%',
+                    animation: { animateScale: true, animateRotate: true }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
