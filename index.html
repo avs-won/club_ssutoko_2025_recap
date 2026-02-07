@@ -1,0 +1,81 @@
+<title>2025 CLUB SSUTOKO Recap</title>
+
+<!-- Fonts & Libraries -->
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Custom JS -->
+<script src="assets/js/main.js" defer></script>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card p-8 rounded-xl border-l-4 border-l-orange-500">
+        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Total Logs</h3>
+        <p class="text-5xl font-black text-white stat-value">344</p>
+    </div>
+    <div class="glass-card p-8 rounded-xl border-l-4 border-l-cyan-500">
+        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Active Members</h3>
+        <p class="text-5xl font-black text-white stat-value">108</p>
+    </div>
+    <div class="glass-card p-8 rounded-xl border-l-4 border-l-slate-500">
+        <h3 class="text-slate-500 font-bold text-xs mb-2 uppercase tracking-widest">Server Track</h3>
+        <p class="text-3xl font-black text-white truncate italic uppercase">SRP BETA</p>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Stage Champions</h2>
+    <div id="stage-kings-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+</section>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <section class="glass-card p-8 rounded-xl col-span-1 lg:col-span-4 flex flex-col items-center">
+        <h2 class="text-lg font-black text-white mb-10 self-start uppercase italic">Gear Analytics</h2>
+        <div class="w-48 h-48 relative">
+            <canvas id="deviceChart"></canvas>
+        </div>
+    </section>
+
+    <section class="glass-card p-8 rounded-xl col-span-1 lg:col-span-8">
+        <h2 class="text-lg font-black text-white mb-8 uppercase italic">Wheel vs Pad Matchup</h2>
+        <table class="w-full text-left">
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Wheel</th>
+                    <th>Gamepad</th>
+                    <th class="text-right">Advantage</th>
+                </tr>
+            </thead>
+            <tbody id="matchup-body"></tbody>
+        </table>
+    </section>
+</div>
+
+<section class="glass-card p-8 rounded-xl">
+    <h2 class="section-title">Machinery Ranking</h2>
+    <div id="car-ranking-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+    <div class="mt-10 text-center">
+        <button id="btn-car-more" class="btn-more px-10 py-3 rounded font-black text-xs uppercase tracking-[0.2em]">Load More Vehicles</button>
+    </div>
+</section>
+
+<section class="glass-card p-8 rounded-xl">
+    <h2 class="section-title">Member Activity</h2>
+    <table class="w-full text-left">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Member</th>
+                <th>Activity</th>
+                <th>Sector Coverage</th>
+            </tr>
+        </thead>
+        <tbody id="user-activity-body"></tbody>
+    </table>
+    <div class="mt-10 text-center">
+        <button id="btn-user-more" class="btn-more px-10 py-3 rounded font-black text-xs uppercase tracking-[0.2em]">Load All Drivers</button>
+    </div>
+</section>
