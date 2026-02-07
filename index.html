@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025 CLUB SSUTOKO - 연말정산 리캡</title>
     <!-- Fonts: Pretendard for best KR/EN readability -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.gh/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,7 +14,7 @@
             --nitro-cyan: #00f2ff;
             --nitro-cyan-dim: rgba(0, 242, 255, 0.15);
             --bg-dark: #050608;
-            --card-bg: rgba(13, 16, 23, 0.9);
+            --card-bg: rgba(13, 16, 23, 0.92);
             --border-light: rgba(255, 255, 255, 0.08);
         }
 
@@ -30,7 +30,7 @@
         /* 미드나잇 수도고 배경 */
         .shutoko-bg {
             background: 
-                radial-gradient(circle at 50% 0%, rgba(0, 242, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 0%, rgba(0, 242, 255, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 100% 100%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
                 linear-gradient(180deg, #050608 0%, #080a12 100%);
             background-attachment: fixed;
@@ -97,7 +97,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         td {
@@ -119,9 +119,10 @@
             box-shadow: 0 0 25px rgba(0, 242, 255, 0.5);
         }
 
-        .top-rank-1 { background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%); border-left: 4px solid #ffd700 !important; }
-        .top-rank-2 { background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, transparent 100%); border-left: 4px solid #c0c0c0 !important; }
-        .top-rank-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, transparent 100%); border-left: 4px solid #cd7f32 !important; }
+        /* 랭킹 강조 스타일 */
+        .top-rank-1 { background: linear-gradient(90deg, rgba(255, 215, 0, 0.15) 0%, transparent 100%); border-left: 4px solid #ffd700 !important; }
+        .top-rank-2 { background: linear-gradient(90deg, rgba(192, 192, 192, 0.15) 0%, transparent 100%); border-left: 4px solid #c0c0c0 !important; }
+        .top-rank-3 { background: linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, transparent 100%); border-left: 4px solid #cd7f32 !important; }
 
         .hidden-item { display: none; }
         ::-webkit-scrollbar { width: 6px; }
@@ -139,7 +140,7 @@
         <header class="text-center mb-28">
             <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-[11px] font-black mb-8 tracking-[0.3em] uppercase">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                Assetto Corsa Shuto Expressway Beta
+                Assetto Corsa Shuto Expressway Beta Server
             </div>
             <h2 class="text-xl font-bold text-zinc-500 mb-3 tracking-[0.4em] uppercase italic">CLUB SSUTOKO 2025</h2>
             <h1 class="text-6xl md:text-9xl font-black mb-10 tracking-tighter uppercase italic leading-none">
@@ -147,7 +148,7 @@
             </h1>
             <p class="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-medium leading-relaxed">
                 2025년 수도고 서버를 뜨겁게 달군 <span class="text-white font-bold border-b-2 border-cyan-500">344건</span>의 기록.<br class="hidden md:block">
-                <span class="text-cyan-400 font-bold italic">클럽 쑤도고</span> 멤버 108명이 함께 만든 공식 데이터 리포트입니다.
+                <span class="text-cyan-400 font-bold italic text-2xl ml-1">클럽 쑤도고</span> 멤버 108명이 함께 만든 공식 데이터 리포트입니다.
             </p>
         </header>
 
@@ -218,13 +219,13 @@
             <section class="glass-card p-10 rounded-2xl col-span-1 lg:col-span-7 overflow-hidden">
                 <h2 class="text-xl font-black text-white mb-10 uppercase italic">장비 대결: 휠 vs 패드 <span class="text-xs font-bold text-zinc-500 ml-2 not-italic">Device Matchup</span></h2>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left">
+                    <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="text-zinc-500">
-                                <th class="px-0">섹터명</th>
-                                <th class="px-0">휠 베스트</th>
-                                <th class="px-0">패드 베스트</th>
-                                <th class="px-0 text-right">우위</th>
+                                <th class="px-4">섹터명</th>
+                                <th class="px-4">휠 베스트</th>
+                                <th class="px-4">패드 베스트</th>
+                                <th class="px-4 text-right">우위</th>
                             </tr>
                         </thead>
                         <tbody id="matchup-body" class="text-sm">
@@ -239,7 +240,7 @@
         <section class="glass-card p-10 rounded-3xl mb-28">
             <div class="flex justify-between items-end mb-12">
                 <h2 class="section-title italic uppercase">인기 차량 랭킹 <span class="text-xs font-bold text-zinc-500 ml-4 not-italic">Machinery Ranking</span></h2>
-                <span class="text-xs font-bold text-zinc-500 tracking-widest uppercase italic">31 Unique Models</span>
+                <span class="text-xs font-bold text-zinc-500 tracking-widest uppercase italic font-black">All Models Used</span>
             </div>
             <div id="car-ranking-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- JS Rendering -->
@@ -252,15 +253,15 @@
         <!-- Member Leaderboard -->
         <section class="glass-card p-10 rounded-3xl">
             <h2 class="section-title mb-2 italic uppercase">멤버별 활동량 내역 <span class="text-xs font-bold text-zinc-500 ml-4 not-italic">Member Performance</span></h2>
-            <p class="text-zinc-500 text-xs mb-10 font-bold uppercase tracking-widest italic">Total 108 Driver Statistics Portfolio</p>
+            <p class="text-zinc-500 text-xs mb-10 font-bold uppercase tracking-widest italic">Full 108 Driver Global Statistics</p>
             <div class="overflow-x-auto rounded-xl">
-                <table class="w-full text-left">
+                <table class="w-full text-left border-collapse">
                     <thead>
                         <tr>
-                            <th class="w-24">순위</th>
-                            <th>드라이버 명</th>
-                            <th>기록 건수</th>
-                            <th>섹터 참여도</th>
+                            <th class="w-24 px-6 py-4">순위</th>
+                            <th class="px-6 py-4">드라이버 명</th>
+                            <th class="px-6 py-4">기록 건수</th>
+                            <th class="px-6 py-4">섹터 참여도</th>
                         </tr>
                     </thead>
                     <tbody id="user-activity-body" class="text-sm font-medium">
@@ -269,7 +270,7 @@
                 </table>
             </div>
             <div class="mt-14 text-center">
-                <button id="btn-user-more" class="btn-more px-14 py-4 rounded-xl font-black text-xs uppercase tracking-[0.3em]">전체 드라이버 확인 / Show All</button>
+                <button id="btn-user-more" class="btn-more px-14 py-4 rounded-xl font-black text-xs uppercase tracking-[0.3em]">전체 드라이버 확인 / Show All (108 Pilots)</button>
             </div>
         </section>
 
@@ -277,7 +278,7 @@
 
     <footer class="mt-40 border-t border-white/5 py-20 text-center bg-black/40 relative z-10">
         <p class="text-cyan-500 font-black tracking-[0.5em] uppercase mb-5 text-xs italic">CLUB SSUTOKO • SHUTO EXPRESSWAY SPECIALIST</p>
-        <p class="text-zinc-600 text-[11px] tracking-widest uppercase font-bold">© 2025 ALL RECORDS ARE ANALYZED BY STAGE KINGS. NO DATA LEFT BEHIND.</p>
+        <p class="text-zinc-600 text-[11px] tracking-widest uppercase font-bold">© 2025 ALL RECORDS ARE ANALYZED BY STAGE KINGS. DATA INTEGRITY VERIFIED.</p>
     </footer>
 
     <script>
@@ -338,6 +339,7 @@
                 { model: "aegis_nissan_gtr_2017", count: 1 }
             ];
 
+            // 제공된 실제 108인 드라이버 데이터
             const userActivity = [
                 { name: "에코", count: 28, sector: "7/9" },
                 { name: "KOR_JJORI", count: 16, sector: "4/9" },
@@ -360,7 +362,7 @@
                 { name: "청수주니", count: 5, sector: "3/9" },
                 { name: "김춘식", count: 5, sector: "3/9" },
                 { name: "N19HTMAR2", count: 5, sector: "4/9" },
-                { name: "Snoopy", count: 5, sector: "3/9" },
+                { name: "Snoopy (Keyboard&Mouse)", count: 5, sector: "3/9" },
                 { name: "Player", count: 5, sector: "2/9" },
                 { name: "swj7960", count: 4, sector: "1/9" },
                 { name: "hxxux_", count: 4, sector: "1/9" },
@@ -368,12 +370,86 @@
                 { name: "sl1zer", count: 3, sector: "2/9" },
                 { name: "sae", count: 3, sector: "1/9" },
                 { name: "ehqkrehgus", count: 3, sector: "2/9" },
-                { name: "양파", count: 3, sector: "3/9" }
+                { name: "양파", count: 3, sector: "3/9" },
+                { name: "skiher", count: 3, sector: "3/9" },
+                { name: "Achorin", count: 3, sector: "3/9" },
+                { name: "Daehee Lim", count: 3, sector: "3/9" },
+                { name: "COOLJUN77", count: 3, sector: "3/9" },
+                { name: "남도일튜브", count: 3, sector: "1/9" },
+                { name: "Rick Deckard", count: 3, sector: "1/9" },
+                { name: "ChoiMan", count: 3, sector: "1/9" },
+                { name: "2Rock", count: 3, sector: "1/9" },
+                { name: "ESSI", count: 3, sector: "1/9" },
+                { name: "rkdwnstj09", count: 2, sector: "2/9" },
+                { name: "저세상 텐션", count: 2, sector: "2/9" },
+                { name: "Mercy", count: 2, sector: "2/9" },
+                { name: "기호", count: 2, sector: "1/9" },
+                { name: "KOR-BIBI", count: 2, sector: "2/9" },
+                { name: "?희", count: 2, sector: "2/9" },
+                { name: "16 Hanwool", count: 2, sector: "2/9" },
+                { name: "Hitme_Master", count: 2, sector: "2/9" },
+                { name: "y3000", count: 2, sector: "1/9" },
+                { name: "GM", count: 2, sector: "2/9" },
+                { name: "miiiin_w", count: 2, sector: "2/9" },
+                { name: "Discer", count: 2, sector: "2/9" },
+                { name: "1001-story", count: 2, sector: "1/9" },
+                { name: "yoon", count: 2, sector: "1/9" },
+                { name: "KOR_Litmus", count: 2, sector: "1/9" },
+                { name: "HyeoN", count: 2, sector: "1/9" },
+                { name: "BockDol", count: 2, sector: "1/9" },
+                { name: "MIDNIGHT", count: 2, sector: "1/9" },
+                { name: "DDAM BI", count: 2, sector: "1/9" },
+                { name: "JW.KIM", count: 2, sector: "1/9" },
+                { name: "topi", count: 2, sector: "1/9" },
+                { name: "chamsae meat", count: 2, sector: "1/9" },
+                { name: "S.K.Y.", count: 2, sector: "1/9" },
+                { name: "junhee kim", count: 1, sector: "1/9" },
+                { name: "Y6", count: 1, sector: "1/9" },
+                { name: "xogud3551", count: 1, sector: "1/9" },
+                { name: "질주", count: 1, sector: "1/9" },
+                { name: "pecom", count: 1, sector: "1/9" },
+                { name: "쥬니어스케", count: 1, sector: "1/9" },
+                { name: "Hyeonwoo", count: 1, sector: "1/9" },
+                { name: "THL", count: 1, sector: "1/9" },
+                { name: "WOKIE", count: 1, sector: "1/9" },
+                { name: "donmisae", count: 1, sector: "1/9" },
+                { name: "SilMiDO", count: 1, sector: "1/9" },
+                { name: "simpson", count: 1, sector: "1/9" },
+                { name: "JJeon_KOOK", count: 1, sector: "1/9" },
+                { name: "설탕", count: 1, sector: "1/9" },
+                { name: "JonCarolina", count: 1, sector: "1/9" },
+                { name: "2M", count: 1, sector: "1/9" },
+                { name: "Park_BaB0", count: 1, sector: "1/9" },
+                { name: "8TON TRUCK", count: 1, sector: "1/9" },
+                { name: "micub01", count: 1, sector: "1/9" },
+                { name: "HANKOOK_TIRE", count: 1, sector: "1/9" },
+                { name: "D", count: 1, sector: "1/9" },
+                { name: "lililjli", count: 1, sector: "1/9" },
+                { name: "J0233e", count: 1, sector: "1/9" },
+                { name: "Pineapple Pizza", count: 1, sector: "1/9" },
+                { name: "sileighteen", count: 1, sector: "1/9" },
+                { name: "BByon", count: 1, sector: "1/9" },
+                { name: "MK3", count: 1, sector: "1/9" },
+                { name: "Kor_DopeTezz", count: 1, sector: "1/9" },
+                { name: "parkjungmian", count: 1, sector: "1/9" },
+                { name: "여리", count: 1, sector: "1/9" },
+                { name: "okokhg", count: 1, sector: "1/9" },
+                { name: "Seunghyun", count: 1, sector: "1/9" },
+                { name: "prolaider", count: 1, sector: "1/9" },
+                { name: "누구세요", count: 1, sector: "1/9" },
+                { name: "Juven", count: 1, sector: "1/9" },
+                { name: "KYW", count: 1, sector: "1/9" },
+                { name: "sett", count: 1, sector: "1/9" },
+                { name: "LasAzin", count: 1, sector: "1/9" },
+                { name: "07040ksm", count: 1, sector: "1/9" },
+                { name: "GASUNGV33", count: 1, sector: "1/9" },
+                { name: "Eunha", count: 1, sector: "1/9" },
+                { name: "4WD", count: 1, sector: "1/9" },
+                { name: "gyu", count: 1, sector: "1/9" },
+                { name: "steelman", count: 1, sector: "1/9" },
+                { name: "TCR", count: 1, sector: "1/9" },
+                { name: "alice11111", count: 1, sector: "1/9" }
             ];
-
-            for(let i=31; i<=108; i++) {
-                userActivity.push({ name: `Member_${i}`, count: 1, sector: "1/9" });
-            }
 
             // 1. Stage Champions
             const stageContainer = document.getElementById('stage-kings-container');
@@ -402,10 +478,10 @@
                 const row = document.createElement('tr');
                 row.className = "hover:bg-white/5 transition-colors group";
                 row.innerHTML = `
-                    <td class="py-5 font-bold text-xs text-zinc-500 group-hover:text-white uppercase italic tracking-tighter">${item.stage}</td>
-                    <td class="py-5 font-black text-white stat-value italic text-lg">${item.wheel}</td>
-                    <td class="py-5 font-black text-white stat-value italic text-lg">${item.pad}</td>
-                    <td class="py-5 text-right">
+                    <td class="py-5 px-4 font-bold text-xs text-zinc-500 group-hover:text-white uppercase italic tracking-tighter">${item.stage}</td>
+                    <td class="py-5 px-4 font-black text-white stat-value italic text-lg">${item.wheel}</td>
+                    <td class="py-5 px-4 font-black text-white stat-value italic text-lg">${item.pad}</td>
+                    <td class="py-5 px-4 text-right">
                         <span class="px-2 py-1 ${item.winner === 'WHEEL' ? 'bg-cyan-500/10 text-cyan-400' : 'bg-zinc-500/10 text-zinc-400'} rounded text-[9px] font-black tracking-widest uppercase italic">
                             ${item.winner} LEAD
                         </span>
@@ -422,7 +498,6 @@
                 
                 let cardClasses = "p-7 rounded-2xl border transition-all duration-300 group ";
                 let badgeHtml = "";
-                let accentColor = "cyan-400";
                 
                 if (index === 0) {
                     cardClasses += "bg-cyan-500/10 border-cyan-400/50 col-span-1 md:col-span-2 lg:col-span-2 shadow-[0_0_40px_rgba(0,242,255,0.15)] ring-1 ring-cyan-400/20";
@@ -468,10 +543,10 @@
 
                 row.className = `hover:bg-white/5 transition-colors group ${topClass} ${index >= 15 ? 'hidden-item user-extra' : ''}`;
                 row.innerHTML = `
-                    <td class="py-6 px-4 font-black text-sm ${index < 3 ? 'text-white' : 'text-zinc-600'}">${rankDisplay}</td>
-                    <td class="py-6 px-4 font-black text-zinc-100 group-hover:text-cyan-400 transition-colors uppercase italic text-base">${user.name}</td>
-                    <td class="py-6 px-4 text-white font-black stat-value text-lg">${user.count} <span class="text-[10px] text-zinc-600 font-bold ml-1 italic uppercase">LOGS</span></td>
-                    <td class="py-6 px-4 text-zinc-500 text-[10px] font-extrabold tracking-widest uppercase italic">${user.sector} COVERAGE</td>
+                    <td class="py-6 px-6 font-black text-sm ${index < 3 ? 'text-white' : 'text-zinc-600'}">${rankDisplay}</td>
+                    <td class="py-6 px-6 font-black text-zinc-100 group-hover:text-cyan-400 transition-colors uppercase italic text-base">${user.name}</td>
+                    <td class="py-6 px-6 text-white font-black stat-value text-lg">${user.count} <span class="text-[10px] text-zinc-600 font-bold ml-1 italic uppercase">LOGS</span></td>
+                    <td class="py-6 px-6 text-zinc-500 text-[10px] font-extrabold tracking-widest uppercase italic">${user.sector} COVERAGE</td>
                 `;
                 userBody.appendChild(row);
             });
@@ -479,7 +554,7 @@
             document.getElementById('btn-user-more').addEventListener('click', function() {
                 const items = document.querySelectorAll('.user-extra');
                 items.forEach(el => el.classList.toggle('hidden-item'));
-                this.textContent = items[0].classList.contains('hidden-item') ? '전체 드라이버 확인 / Show All' : '접기 / Show Less';
+                this.textContent = items[0].classList.contains('hidden-item') ? '전체 드라이버 확인 / Show All (108 Pilots)' : '접기 / Show Less';
             });
 
             // 5. Gear Chart
